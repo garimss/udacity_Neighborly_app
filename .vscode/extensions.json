@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "ms-azuretools.vscode-azurefunctions",
+    "ms-python.python",
+    "leo-labs.dotnet",
+    "kishoreithadi.dotnet-core-essentials",
+    "matijarmk.dotnet-core-commands"
+  ]
+}
