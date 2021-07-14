@@ -32,25 +32,25 @@
                 {% for a in ads %}
                 <div class="panel">
                     <div class="panel-body panel-neighborly">
-                        <div class="panel-title"> <a href="/ad/view/{{ a._id['$oid'] }}">{{a.title}}</a></div>
+                        <div class="panel-title"> <a href="/ad/view/{{ a.id }}">{{a.title}}</a></div>
                         <p class="text-muted">Email: {{a.email}}</p>
                         <p class="text-muted">{{a.description}}</p>
                         <p class="text-muted">Price: {{ a.price}}</p>
                         <p><img class="img-small" width="200" src={{a.imgUrl}}></p>
                     </div><!-- end panel body -->
                     <div class="panel-footer">
-                        <a class="btn btn-warning btn-xs" href="ad/edit/{{ a._id['$oid'] }}">Update</a>
-                        <a class="btn btn-danger btn-xs" href="ad/delete/{{ a._id['$oid'] }}">Delete</a>
+                        <a class="btn btn-warning btn-xs" href="ad/edit/{{ a.id }}">Update</a>
+                        <a class="btn btn-danger btn-xs" href="ad/delete/{{ a.id }}">Delete</a>
                     </div>
                  </div><!-- end panel  -->
                 {% endfor %}       
                 <h3 class="ml-2"> General Posts </h3>
-                {% for p in posts %}
+                {% for a in ads %}
                 <div class="panel">
                     <div class="panel-body panel-neighborly">
-                        <div class="panel-title">{{p.title}}</div>
-                        <p class="text-muted"> {{ p.description }}</p>
-                        <p><img class="img-small" width="200" src={{p.imgUrl}}></p>
+                        <div class="panel-title">{{a.title}}</div>
+                        <p class="text-muted"> {{ a.description }}</p>
+                        <p><img class="img-small" width="200" src={{a.imgUrl}}></p>
                     </div><!-- end card-body -->
                  </div><!-- end card -->
                 {% endfor %}       
@@ -68,5 +68,3 @@
     </div><!-- end row -->
 </div
 {% endblock %}
-
-  

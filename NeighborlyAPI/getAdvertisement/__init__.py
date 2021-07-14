@@ -10,7 +10,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     # example call http://localhost:7071/api/getAdvertisement/?id=5eb6cb8884f10e06dc6a2084
 
-    id = req.params.get('id')
+    id = req.params.get('_id')
     print("--------------->", id)
     
     if id:

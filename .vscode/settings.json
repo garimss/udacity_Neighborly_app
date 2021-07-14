@@ -6,5 +6,7 @@
     "azureFunctions.projectRuntime": "~3",
     "debug.internalConsoleOptions": "neverOpen",
     "python.pythonPath": "C:\\Users\\Garima\\.msvscode.hdinsight\\hdinsightJupyter\\Scripts\\python.exe",
-    "jupyter.jupyterLaunchTimeout": 240000
+    "jupyter.jupyterLaunchTimeout": 240000,
+    "appService.defaultWebAppToDeploy": "/subscriptions/f0087ea9-5776-46d6-99b0-6b3f63f86da8/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/neighborywebapp",
+    "appService.deploySubpath": "NeighborlyFrontEnd"
 }

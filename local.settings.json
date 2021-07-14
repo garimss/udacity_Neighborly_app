@@ -11,6 +11,6 @@
     "WEBSITE_NODE_DEFAULT_VERSION": "-10"
 
   },
-  "ConnectionStrings": {}
+  "ConnectionStrings": "DefaultEndpointsProtocol=https;AccountName=project2neighborlyapp;AccountKey=KVWU52ucfhbrq2AiX9aKjTRhyOF5jz3kNi5j4yivoJaizJWUiNT9YC1Ti6VF2/53i9vOGMjo7PVUDd9KgwahqQ==;EndpointSuffix=core.windows.net"
 }
 
