@@ -1,32 +1,31 @@
-import logging.config
-import os
-from flask import Flask, Blueprint, request, jsonify, render_template, redirect, url_for
-from flask_bootstrap import Bootstrap
-import setting
-import requests
 import json
-from feedgen.feed import FeedGenerator
-from flask import make_response
 from urllib.parse import urljoin
+
+import requests
+from feedgen.feed import FeedGenerator
+from flask import (Flask, make_response, redirect, render_template, request,
+                   url_for)
+from flask_bootstrap import Bootstrap
 from werkzeug.contrib.atom import AtomFeed
 
+import setting
 
 app = Flask(__name__)
 Bootstrap(app)
 
 
-
 def get_abs_url(url):
-    """ Returns absolute url by joining post url with base url """
+    """Returns absolute url by joining post url with base url"""
     return urljoin(request.url_root, url)
 
 
-@app.route('/feeds/')
+@app.route("/feeds/")
 def feeds():
-    feed = AtomFeed(title='All Advertisements feed',
-                    feed_url=request.url, url=request.url_root)
+    feed = AtomFeed(
+        title="All Advertisements feed", feed_url=request.url, url=request.url_root
+    )
 
-    response = requests.get(setting.API_URL + '/getAdvertisements')
+    response = requests.get(setting.API_URL + "/getAdvertisements")
     posts = response.json()
 
     for key, value in posts.items():
@@ -42,99 +41,110 @@ def feeds():
     # return feed.get_response()
 
 
-@app.route('/rss')
+@app.route("/rss")
 def rss():
     fg = FeedGenerator()
-    fg.title('Feed title')
-    fg.description('Feed Description')
-    fg.link(href='https://project2neighborlyapp.azurewebsites.net/')
-    
+    fg.title("Feed title")
+    fg.description("Feed Description")
+    fg.link(href=setting.API_URL)
 
-    response = requests.get(setting.API_URL + '/getAdvertisements')
+    response = requests.get(setting.API_URL + "/getAdvertisements")
     ads = response.json()
 
-    for a in ads: 
+    for a in ads:
         fe = fg.add_entry()
         fe.title(a.title)
         fe.description(a.description)
 
     response = make_response(fg.rss_str())
-    response.headers.set('Content-Type', 'application/rss+xml')
+    response.headers.set("Content-Type", "application/rss+xml")
     return response
 
-@app.route('/')
+
+@app.route("/")
 def home():
-    response = requests.get(setting.API_URL + '/getAdvertisements')
-    response2 = requests.get(setting.API_URL + '/getPosts')
+    response = requests.get(setting.API_URL + "/getAdvertisements")
+    response2 = requests.get(setting.API_URL + "/getPosts")
 
     ads = response.json()
     posts = response2.json()
     return render_template("index.html", ads=ads, posts=posts)
 
 
-@app.route('/ad/add', methods=['GET'])
+@app.route("/ad/add", methods=["GET"])
 def add_ad_view():
     return render_template("new_ad.html")
 
 
-@app.route('/ad/edit/<id>', methods=['GET'])
+@app.route("/ad/edit/<id>", methods=["GET"])
 def edit_ad_view(id):
-    response = requests.get(setting.API_URL + '/getAdvertisement?id=' + id)
-    ads = response.json()
-    return render_template("edit_ad.html", ad=ads)
+    response = requests.get(setting.API_URL + "/getAdvertisement?id=" + id)
+    ad = response.json()
+    return render_template("edit_ad.html", ad=ad)
 
 
-@app.route('/ad/delete/<id>', methods=['GET'])
+@app.route("/ad/delete/<id>", methods=["GET"])
 def delete_ad_view(id):
-    response = requests.get(setting.API_URL + '/getAdvertisement?id=' + id)
-    ads = response.json()
-    return render_template("delete_ad.html", ad=ads)
+    response = requests.get(setting.API_URL + "/deleteAdvertisement?id=" + id)
+    ad = response.json()
+    return render_template("delete_ad.html", ad=ad)
 
-@app.route('/ad/view/<id>', methods=['GET'])
+
+@app.route("/ad/view/<id>", methods=["GET"])
 def view_ad_view(id):
-    response = requests.get(setting.API_URL + '/getAdvertisement?id=' + id)
-    ads = response.json()
-    return render_template("view_ad.html", ad=ads)
+    response = requests.get(setting.API_URL + "/getAdvertisement?id=" + id)
+    ad = response.json()
+    return render_template("view_ad.html", ad=ad)
 
-@app.route('/ad/new', methods=['POST'])
+
+@app.route("/ad/new", methods=["POST"])
 def add_ad_request():
     # Get item from the POST body
     req_data = {
-        'title': request.form['title'],
-        'city': request.form['city'],
-        'description': request.form['description'],
-        'email': request.form['email'],
-        'imgUrl': request.form['imgUrl'],
-        'price': request.form['price']
+        "title": request.form["title"],
+        "city": request.form["city"],
+        "description": request.form["description"],
+        "email": request.form["email"],
+        "imgUrl": request.form["imgUrl"],
+        "price": request.form["price"],
     }
-    response = requests.post(setting.API_URL + '/createAdvertisement', json=json.dumps(req_data))
-    return redirect(url_for('home'))
 
-@app.route('/ad/update/<id>', methods=['POST'])
+    response = requests.post(
+        setting.API_URL + "/createAdvertisement", json.dumps(req_data)
+    )
+    return redirect(url_for("home"))
+
+
+@app.route("/ad/update/<id>", methods=["PUT"])
 def update_ad_request(id):
     # Get item from the POST body
     req_data = {
-        'title': request.form['title'],
-        'city': request.form['city'],
-        'description': request.form['description'],
-        'email': request.form['email'],
-        'imgUrl': request.form['imgUrl'],
-        'price': request.form['price']
+        "title": request.form["title"],
+        "city": request.form["city"],
+        "description": request.form["description"],
+        "email": request.form["email"],
+        "imgUrl": request.form["imgUrl"],
+        "price": request.form["price"],
     }
-    response = requests.put(setting.API_URL + '/updateAdvertisement?id=' + id, json=json.dumps(req_data))
-    return redirect(url_for('home'))
+    response = requests.put(setting.API_URL + "/updateAdvertisement?id=" + id, json.dumps(req_data))
+    
+    return redirect(url_for("home"))
 
-@app.route('/ad/delete/<id>', methods=['POST'])
+
+@app.route("/ad/delete/<id>", methods=["POST"])
 def delete_ad_request(id):
-    response = requests.delete(setting.API_URL + '/deleteAdvertisement?id=' + id)
+    response = requests.delete(setting.API_URL + "/deleteAdvertisement?id=" + id)
     if response.status_code == 200:
-        return redirect(url_for('home'))
+        return redirect(url_for("home"))
+
 
 # running app
 def main():
-    print(' ----->>>> Flask Python Application running in development server')
-    app.run(host=setting.SERVER_HOST, port=setting.SERVER_PORT, debug=setting.FLASK_DEBUG)
+    print(" ----->>>> Flask Python Application running in development server")
+    app.run(
+        host=setting.SERVER_HOST, port=setting.SERVER_PORT, debug=setting.FLASK_DEBUG
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
