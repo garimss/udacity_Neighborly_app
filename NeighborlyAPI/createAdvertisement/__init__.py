@@ -1,6 +1,7 @@
 import azure.functions as func
+
 import unit_of_work
-import os
+
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
 
@@ -16,10 +17,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
         except ValueError:
             print("could not connect to mongodb")
-            return func.HttpResponse('Could not connect to mongodb', status_code=500)
+            return func.HttpResponse("Could not connect to mongodb", status_code=500)
 
     else:
-        return func.HttpResponse(
-            "Please pass name in the body",
-            status_code=400
-        )
+        return func.HttpResponse("Please pass name in the body", status_code=400)

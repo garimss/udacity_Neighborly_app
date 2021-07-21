@@ -1,5 +1,10 @@
 import azure.functions as func
+import pymongo
+import json
 from bson.json_util import dumps
+from bson.objectid import ObjectId
+import logging
+import os
 
 import unit_of_work
 
@@ -9,12 +14,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     id = req.params.get('id')
     print("--------------->", id)
+
+    
     
     if id:
         try:
             uow = unit_of_work.MongoUnitOfWork()
             collection_name = "advertisements"
             result = uow.get_one(collection_name, id)
+
 
             print("----------result--------")
             result = dumps(result)
