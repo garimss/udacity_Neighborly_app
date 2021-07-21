@@ -17,4 +17,4 @@ API_VERSION = "v1"
 
 # for local host if Azure functions served locally
 #API_URL = "http://localhost:5000/api"
-API_URL = "https://project2neighborlyapp-project2neighborlyapp.azurewebsites.net/api"
+API_URL = "https://project2neighborlyapp.azurewebsites.net/api"
